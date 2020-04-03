@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env python3
 
 '''
 Note: In order for this to work you need to install the
