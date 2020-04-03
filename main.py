@@ -105,7 +105,7 @@ weather_df = forcast_to_df(
     forecastparser.ForecastParser().parse_JSON(owm_req.text),
     sunrise_time, sunset_time, tz_correct)
 
-if os.path.exists('./weather_data/weather_log.csv')
+if os.path.exists('./weather_data/weather_log.csv'):
     weather_log = pd.read_csv(
         './weather_data/weather_log.csv', index_col=0)
 else:
