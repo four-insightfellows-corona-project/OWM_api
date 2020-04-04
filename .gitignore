@@ -1,6 +1,7 @@
 # Added
 auth.py
 /weather_data/weather_log.csv
+/weather_data/current_log.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
