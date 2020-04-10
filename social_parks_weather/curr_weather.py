@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 '''
+Captures the current weather conditions from OpenWeatherMap API.
+
 Note: In order for this to work you need to install the
 develop branch of pyowm, this can be done using:
 
@@ -14,6 +16,14 @@ import pandas as pd
 
 from auth import (
     OWM_api_key)
+
+
+def data_file_path(folder, datafile):
+    ''' give folder and file,
+        returns file path
+    '''
+    return os.path.join(os.path.dirname(os.getcwd()), folder, datafile)
+
 
 OWM_forcast_cols = ['park_name', 'reception_time', 'reference_time',
                     'sunset_time', 'sunrise_time', 'clouds', 'rain_1h',
@@ -67,13 +77,14 @@ to_add_dict = {
 
 current_wethr_df = pd.DataFrame(to_add_dict)
 
-if os.path.exists('./weather_data/current_log.csv'):
-    current_log = pd.read_csv(
-        './weather_data/current_log.csv', index_col=0)
+log_path = data_file_path('weather_data', 'current_log.csv')
+
+if os.path.exists(log_path):
+    current_log = pd.read_csv(log_path, index_col=0)
 else:
     current_log = pd.read_csv(
-        './weather_data/example_current_df.csv', index_col=0)
+        data_file_path('weather_data', 'example_current_df.csv'), index_col=0)
 
 current_log = current_log.append(current_wethr_df, ignore_index=True)
 
-current_log.to_csv('./weather_data/current_log.csv')
+current_log.to_csv(log_path)

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 '''
+Captures the 5 day / 3 hour forcasts from OpenWeatherMap API.
+
 Note: In order for this to work you need to install the
 develop branch of pyowm, this can be done using:
 
@@ -24,6 +26,14 @@ OWM_forcast_cols = ['park_name', 'reception_time', 'reference_time',
                     'wind_speed', 'wind_deg', 'humidity', 'press', 'press_sea',
                     'temp', 'temp_feels', 'temp_max', 'temp_min', 'status',
                     'detailed_status']
+
+
+def data_file_path(folder, datafile):
+    ''' give folder and file,
+        returns file path
+    '''
+    return os.path.join(os.path.dirname(os.getcwd()), folder, datafile)
+
 
 def forcast_to_df(park_forcast, t_sunrise, t_sunset, tz_correct):
     ''' Takes a forcast object and sunrise/sunset time,
@@ -105,13 +115,14 @@ weather_df = forcast_to_df(
     forecastparser.ForecastParser().parse_JSON(owm_req.text),
     sunrise_time, sunset_time, tz_correct)
 
-if os.path.exists('./weather_data/weather_log.csv'):
-    weather_log = pd.read_csv(
-        './weather_data/weather_log.csv', index_col=0)
+log_path = data_file_path('weather_data', 'weather_log.csv')
+
+if os.path.exists(log_path):
+    weather_log = pd.read_csv(log_path, index_col=0)
 else:
     weather_log = pd.read_csv(
-        './weather_data/example_weather_df.csv', index_col=0)
+        data_file_path('weather_data', 'example_weather_df.csv'), index_col=0)
 
 weather_log = weather_log.append(weather_df, ignore_index=True)
 
-weather_log.to_csv('./weather_data/weather_log.csv')
+weather_log.to_csv(log_path)
